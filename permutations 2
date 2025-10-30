@@ -1,0 +1,21 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+
+        if len(nums) == 1:
+            return [nums]
+
+        permutation_list = []
+
+        def permutationFinder(permutation, nums, checked):
+
+            if len(permutation) == len(nums):
+                permutation_list.append(permutation)
+                return
+            
+            for i in range(len(nums)):
+                if i not in checked:
+                    permutationFinder(permutation + [nums[i]], nums, checked + [i])
+
+        permutationFinder([], nums, [])
+
+        return list(set([tuple(item) for item in permutation_list]))
