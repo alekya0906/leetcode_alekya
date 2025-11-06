@@ -1,0 +1,13 @@
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        dp = [[0 for _ in range(n+1)] for _ in range(m+1)]
+        dp[m-1][n-1] = 1 # One way to finish the last step
+
+        for idx in range(m-1, -1, -1):
+            for jdx in range(n-1, -1, -1):
+                if (idx, jdx) == (m-1, n-1):
+                    # We already initialized it to 1
+                    continue
+                dp[idx][jdx] = dp[idx+1][jdx] + dp[idx][jdx+1]
+
+        return dp[0][0]
