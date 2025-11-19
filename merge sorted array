@@ -1,0 +1,36 @@
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        t = m+n
+        for i in range(m,t):
+            nums1[i] = nums2[i%n]
+
+        def heapify(nums1,i,t):
+            large = i
+            l = 2*i+1
+            r = 2*i+2
+
+            if l < t and nums1[l] > nums1[large]:
+                large = l
+            if r < t and nums1[r] > nums1[large]:
+                large = r
+            
+            if large != i:
+                nums1[i],nums1[large]= nums1[large],nums1[i]
+
+                heapify(nums1,large,t)
+        
+        for i in range(t//2-1,-1,-1):
+            heapify(nums1,i,t)
+        
+        for i in range(t-1,0,-1):
+            nums1[0],nums1[i] = nums1[i],nums1[0]
+            heapify(nums1,0,i)
+
+
+
+
+
+        
