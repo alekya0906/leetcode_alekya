@@ -1,0 +1,28 @@
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        result = []
+        flag = False    
+        q = deque([root])
+
+        while q:
+            level = []                          # each level array must start empty
+            for i in range(len(q)):             # traverse through current level
+                node = q.popleft()              # remove nodes from current level
+                level.append(node.val)          # update current level
+                
+                # append left and right childrens into q
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+
+            # if flag is True reverse list and append else append
+            if flag:
+                result.append(level[::-1])
+            else:
+                result.append(level)
+            flag = not flag                     # alternate the flag
+        return result
