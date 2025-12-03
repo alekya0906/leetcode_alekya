@@ -1,0 +1,58 @@
+from collections import defaultdict
+from functools import cache
+
+
+def binary_search_index(nums: list[int], target: int) -> int:
+    if not nums:
+        return None
+
+    l, r = 0, len(nums) - 1
+
+    while l < r:
+        mid_index = (l + r) // 2
+        mid = nums[mid_index]
+        if mid < target:
+            l = mid_index + 1
+        elif mid >= target:
+            r = mid_index
+    
+    if r >= len(nums):
+        return None
+    return r if nums[r] >= target else None
+
+
+class DataStructure:
+    def __init__(self, s: str) -> None:
+        self.d = defaultdict(list)
+        for i, c in enumerate(s):
+            self.d[c].append(i)
+    
+    @cache
+    def all_indexes_after(self, c: str, num: int) -> list[int]:
+        index = binary_search_index(self.d[c], num)
+        if index is None:
+            return []
+        return self.d[c][index:]
+
+
+class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        struct = DataStructure(s)
+
+        @cache
+        def rec(i: int, j: int) -> int:
+            source, target = s[i:], t[j:]
+
+            if not target:
+                return 1
+            
+            if len(source) < len(target):
+                return 0
+            
+            ret = 0
+            for index in struct.all_indexes_after(target[0], i):
+                ret += rec(index + 1, j + 1)
+            return ret
+        
+        ret = rec(0, 0)
+        return ret
