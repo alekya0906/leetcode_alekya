@@ -1,0 +1,22 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+
+        if n <= 1:
+            return 0
+
+        dp = [prices[0], prices[0]]
+        ans = 0
+        for i in range(1, n):
+            p = prices[i]
+            if p > dp[1]:
+                # "you can sell and buy the stock multiple times on the same day"
+                # so we can add the profit once there is one
+                ans += p - dp[0]
+                dp[0] = p
+                dp[1] = p
+            if p < dp[0]:
+                dp[0] = p
+                dp[1] = p
+        
+        return ans
