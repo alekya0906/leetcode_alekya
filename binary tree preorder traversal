@@ -1,0 +1,56 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        # preorder: Root -> left -> Right
+        # time: O(n) we process each node once
+        # space: O(h) where h is the height of tree
+        res = []
+        def dfs(node):
+            if not node:
+                return 
+            res.append(node.val)
+            dfs(node.left)
+            dfs(node.right)
+        dfs(root)
+        return res
+
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        # Iterative Approach 
+        # time, space: O(n), O(h); h = height of tree
+        res, stack = [], []
+        cur = root 
+        while cur or stack:
+            if cur:
+                res.append(cur.val)
+                stack.append(cur.right)
+                cur = cur.left 
+            else:
+                cur = stack.pop()
+        return res
+
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        # Morris Approach
+        # time, space = O(n), O(1)
+        res = []
+        cur = root
+        while cur:
+            if not cur.left:
+                res.append(cur.val)
+                cur = cur.right
+            else:
+                prev = cur.left
+                while prev.right and prev.right != cur:
+                    prev = prev.right
+                if not prev.right:
+                    res.append(cur.val)
+                    prev.right = cur
+                    cur = cur.left
+                else:
+                    prev.right = None
+                    cur = cur.right
+        return res
