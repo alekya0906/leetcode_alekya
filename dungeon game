@@ -1,0 +1,28 @@
+from math import inf
+
+class Solution:
+    def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:
+        m, n = len(dungeon[0]), len(dungeon)
+        cache = [[None]*m for _ in range(n)]
+
+        # cache[i][j] = how much damage would knight take
+        #               if they went this way
+        cache[n-1][m-1] = max(0, -dungeon[n-1][m-1])
+
+        # optimization: take the condition stuff out of the loop
+        for i in reversed(range(n - 1)):
+            cache[i][m-1] = max(
+                0, -dungeon[i][m-1] + cache[i + 1][m-1]
+            )
+        for j in reversed(range(m - 1)):
+            cache[n-1][j] = max(
+                0, -dungeon[n-1][j] + cache[n-1][j + 1]
+            )
+
+        for i in reversed(range(n - 1)):
+            for j in reversed(range(m - 1)):
+                cache[i][j] = max(0, -dungeon[i][j] + min(
+                    cache[i + 1][j],
+                    cache[i][j + 1]
+                ))
+        return cache[0][0] + 1
