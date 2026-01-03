@@ -1,0 +1,19 @@
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        # _dict = {}
+        # res = []
+        # for i in range(9, len(s)):
+        #     sub = s[i-9:i+1]
+        #     if _dict.get(sub, 0) == 1:
+        #         res.append(sub)
+        #     _dict[sub] = _dict.get(sub, 0) + 1
+        # return res
+
+        _set = set()
+        res = set()
+        for i in range(9, len(s)):
+            sub = s[i-9:i+1]
+            if sub in _set:
+                res.add(sub)
+            _set.add(sub)
+        return list(res)
