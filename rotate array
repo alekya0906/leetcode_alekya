@@ -1,0 +1,24 @@
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+
+        n = len(nums)
+        k = k%n
+        offset = 0
+        if min(nums) < 0:
+            offset = -min(nums)
+        for i in range(n):
+            nums[i]+=offset
+        
+        mask = max(nums)+1
+        for i in range(n):
+            nums[i]*=mask
+        for i in range(n):
+            idx = (i+k)%n
+            nums[idx]+=nums[i]//mask
+        
+        for i in range(n):
+            nums[i] = nums[i]%mask
+            nums[i] -= offset
