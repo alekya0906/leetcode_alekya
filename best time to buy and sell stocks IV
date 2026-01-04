@@ -1,0 +1,27 @@
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+
+        memo = {}
+
+        def helper(i, flag, count):
+            if i == len(prices):
+                return 0
+
+            t = (i, flag, count)
+            if t in memo:
+                return memo[t]
+
+            # Skip
+            ans = helper(i + 1, flag, count)
+
+            # Buy
+            if flag and count > 0:
+                ans = max(ans, helper(i + 1, False, count) - prices[i])
+            # Sell
+            elif not flag:
+                ans = max(ans, helper(i + 1, True, count - 1) + prices[i])
+
+            memo[t] = ans
+            return ans
+
+        return helper(0, True, k)
