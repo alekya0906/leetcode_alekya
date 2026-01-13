@@ -1,0 +1,33 @@
+from typing import List, Dict, Set
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # Build adjacency list: edge prereq -> course
+        graph = {i: set() for i in range(numCourses)}
+        for course, prereq in prerequisites:
+            graph[prereq].add(course)
+
+        return not self.has_cycle_dfs(graph)
+
+    def has_cycle_dfs(self, graph: Dict[int, Set[int]]) -> bool:
+        visited = set()
+        on_stack = set()
+
+        def dfs(u: int) -> bool:
+            if u in on_stack:
+                return True
+            if u in visited:
+                return False
+            visited.add(u)
+            on_stack.add(u)
+            for v in graph.get(u, ()):
+                if dfs(v):
+                    return True
+            on_stack.remove(u)
+            return False
+
+        for node in graph:
+            if node not in visited:
+                if dfs(node):
+                    return True
+        return False
