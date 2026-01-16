@@ -1,0 +1,16 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        cur1 = 0
+        if len(nums) == 1: return nums[0]
+        def r(ind, n):
+            cur = 0
+            pre = 0
+            while ind < n:
+                t = cur
+                cur = pre + nums[ind]
+                pre = max(pre, t)
+                ind += 1
+            # print(pre, cur, n)
+            return max(pre, cur)
+        
+        return max(r(0, len(nums)-1), r(1, len(nums))) 
