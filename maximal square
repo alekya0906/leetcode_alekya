@@ -1,0 +1,36 @@
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        maxArea = 0
+        rows = len(matrix)
+        cols = len(matrix[0])
+        prefixArr = [[0]*cols for i in range(rows)]
+
+        for j in range(cols):
+            total = 0
+            for i in range(rows):
+                if matrix[i][j] == '1':
+                    total += 1
+                else:
+                    total = 0
+                prefixArr[i][j] = total
+
+        def largestRectangleArea(row):
+            area = 0
+            row.append(0)
+            stack = []
+            for i in range(len(row)):
+                while stack and row[i] < row[stack[-1]]:
+                    s_i = stack.pop()
+                    right = i
+                    left = stack[-1] if stack else -1
+                    w = right - left - 1
+                    h = row[s_i]
+                    side = min(w,h)
+                    area = max(area, side*side)
+                stack.append(i)
+            return area
+        
+        for row in prefixArr:
+            maxArea = max(maxArea, largestRectangleArea(row))
+        
+        return maxArea
