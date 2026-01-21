@@ -1,0 +1,21 @@
+class Solution:
+    # def countNodes(self,root):
+    #     if not root:
+    #         return 0
+    #     return 1+self.countNodes(root.left)+self.countNodes(root.right)
+    def countNodes(self,root):
+        def getHeight(node):
+            h=0
+            while node:
+                node=node.left
+                h+=1
+            return h
+
+        if not root:
+            return 0
+        left_height=getHeight(root.left)
+        right_height=getHeight(root.right)
+        if left_height==right_height:
+            return 1+(2**left_height-1)+self.countNodes(root.right)
+        else:
+            return 1+(2**right_height-1)+self.countNodes(root.left)
