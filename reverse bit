@@ -1,0 +1,6 @@
+class Solution:
+    def reverseBits(self, n: int) -> int:
+        rn = bin(n)[-1:1:-1]
+        if len(rn) < 32:
+            rn += ('0' * (32 - len(rn)))
+        return(int(rn, 2))
