@@ -1,0 +1,4 @@
+class Solution:
+    def numberOfSpecialChars(self, s: str) -> int:
+        return sum(bool(match(fr'[^{C}]*{c}[^{c}{C}]*{C}[^{c}]*$',s))
+            for c,C in zip(ascii_lowercase,ascii_uppercase))
